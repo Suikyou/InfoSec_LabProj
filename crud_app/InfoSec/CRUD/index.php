@@ -21,6 +21,10 @@
     <h2>Task Index</h2>
     <div class="buttons">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Add Task </button>
+        <!-- Logout Button -->
+        <form action="logout.php" method="post">
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
     </div>
 </div>
 
