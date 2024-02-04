@@ -55,7 +55,21 @@ if (isset($_POST['submit'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
     <title>Register</title>
+    <style>
+        /* Add your CSS styles here */
+        .field {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -76,13 +90,17 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div class="field input">
                     <label for="password">Password</label>
-                    <input type="password" name="password" id="password" autocomplete="off" placeholder="Enter your password here" required>
-                    <i class="fa fa-eye" id="togglePassword"></i>
+                    <div style="position:relative;">
+                        <input type="password" name="password" id="password" autocomplete="off" placeholder="Enter your password here" required>
+                        <i class="far fa-eye toggle-password" onclick="togglePassword('password')" id="togglePassword"></i> <!-- Eye icon -->
+                    </div>
                 </div>
                 <div class="field input">
                     <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" name="confirmPassword" id="confirmPassword" autocomplete="off" placeholder="Confirm your password" required>
-                    <i class="fa fa-eye" id="togglePassword"></i>
+                    <div style="position:relative;">
+                        <input type="password" name="confirmPassword" id="confirmPassword" autocomplete="off" placeholder="Confirm your password" required>
+                        <i class="far fa-eye toggle-password" onclick="togglePassword('confirmPassword')" id="toggleConfirmPassword"></i> <!-- Eye icon -->
+                    </div>
                 </div>
                 <div class="field">
                     <input type="submit" name="submit" class="btn" value="Sign Up" required>
@@ -93,6 +111,16 @@ if (isset($_POST['submit'])) {
             </form>
         </div>
     </div>
+    <script>
+        function togglePassword(inputId) {
+            var x = document.getElementById(inputId);
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 </body>
 </html>
 <?php } ?>
