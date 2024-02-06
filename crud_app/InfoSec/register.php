@@ -2,52 +2,61 @@
 session_start();
 include("config.php");
 include("CRUD/dbcon.php");
+
+// Initialize variables to hold user input and error message
+$firstNameValue = "";
+$lastNameValue = "";
+$emailAddValue = "";
+$errorMessage = "";
+
 if (isset($_POST['submit'])) {
+    // Retrieve user input from the form
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     $emailAdd = $_POST['emailAdd'];
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
 
-    // Check if password and confirm password match
-    if ($password !== $confirmPassword) {
-        echo "<div class='message'>
-                <p>Password and Confirm Password do not match. Please try again.</p>
-            </div> <br>";
-        echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button>";
-        exit(); // Stop execution if passwords don't match
-    }
+    // Store user input in variables for display after error prompt
+    $firstNameValue = htmlspecialchars($firstName);
+    $lastNameValue = htmlspecialchars($lastName);
+    $emailAddValue = htmlspecialchars($emailAdd);
 
-    // Hash the password
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-    // Verifying the unique email
-    $verify_query = mysqli_query($con, "SELECT id FROM users WHERE emailAdd='$emailAdd'");
-
-    if ($verify_query === false) {
-        die('Error: ' . mysqli_error($con));
-    }
-
-    if (mysqli_num_rows($verify_query) != 0) {
-        echo "<div class='message'>
-                <p>This Email Address is already taken. Try another one, please!</p>
-            </div> <br>";
-        echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button>";
+    // Check if first name and last name contain only letters
+    if (!preg_match("/^[a-zA-Z]*$/", $firstName) || !preg_match("/^[a-zA-Z]*$/", $lastName)) {
+        $errorMessage = "First name and last name must contain only letters.";
+    } elseif (!filter_var($emailAdd, FILTER_VALIDATE_EMAIL)) {
+        // Validate email format
+        $errorMessage = "Invalid email format. Please enter a valid email address.";
+    } elseif ($password !== $confirmPassword) {
+        // Check if password and confirm password match
+        $errorMessage = "Password and Confirm Password do not match. Please try again.";
     } else {
-        $insert_query = mysqli_query($con, "INSERT INTO users(firstName, lastName, emailAdd, password) VALUES ('$firstName', '$lastName', '$emailAdd', '$hashedPassword')");
+        // Hash the password
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        if ($insert_query === false) {
-            die('Error: ' . mysqli_error($con));
+        // Verifying the unique email
+        $verify_query = mysqli_query($con, "SELECT id FROM users WHERE emailAdd='$emailAdd'");
+
+        if ($verify_query === false) {
+            $errorMessage = "Error: " . mysqli_error($con);
+        } elseif (mysqli_num_rows($verify_query) != 0) {
+            $errorMessage = "This Email Address is already taken. Try another one, please!";
+        } else {
+            $insert_query = mysqli_query($con, "INSERT INTO users(firstName, lastName, emailAdd, password) VALUES ('$firstName', '$lastName', '$emailAdd', '$hashedPassword')");
+
+            if ($insert_query === false) {
+                $errorMessage = "Error: " . mysqli_error($con);
+            } else {
+                // Redirect to login page after successful registration
+                echo "<script>alert('Registration Complete! Redirecting you to the login menu.'); window.location='login.php';</script>";
+                exit(); // Stop execution
+            }
         }
-
-        echo "<div class='message'>
-        <p>Registration Complete!</p>
-            </div> <br>";
-
-        echo "<script>alert('Account registration complete! Redirecting you to the login menu.'); window.location='login.php';</script>";
     }
-} else {
+}
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,15 +87,15 @@ if (isset($_POST['submit'])) {
             <form action="" method="post"> 
                 <div class="field input">
                     <label for="firstName">First Name</label>
-                    <input type="text" name="firstName" id="firstName" autocomplete="off" placeholder="Enter your first name here" required>
+                    <input type="text" name="firstName" id="firstName" autocomplete="off" placeholder="Enter your first name here" value="<?php echo $firstNameValue; ?>" pattern="[A-Za-z]+" title="Please enter letters only" required>
                 </div>
                 <div class="field input">
                     <label for="lastName">Last Name</label>
-                    <input type="text" name="lastName" id="lastName" autocomplete="off" placeholder="Enter your last name here" required>
+                    <input type="text" name="lastName" id="lastName" autocomplete="off" placeholder="Enter your last name here" value="<?php echo $lastNameValue; ?>" pattern="[A-Za-z]+" title="Please enter letters only" required>
                 </div>
                 <div class="field input">
                     <label for="emailAdd">Email Address</label>
-                    <input type="text" name="emailAdd" id="emailAdd" autocomplete="off" placeholder="Enter your email address here" required>
+                    <input type="text" name="emailAdd" id="emailAdd" autocomplete="off" placeholder="Enter your email address here" value="<?php echo $emailAddValue; ?>" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required>
                 </div>
                 <div class="field input">
                     <label for="password">Password</label>
@@ -109,6 +118,11 @@ if (isset($_POST['submit'])) {
                     Already have an account? <a href="login.php">Login Now</a>
                 </div>
             </form>
+            <?php if (!empty($errorMessage)) : ?>
+                <div class="message">
+                    <p><?php echo $errorMessage; ?></p>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
     <script>
@@ -123,4 +137,3 @@ if (isset($_POST['submit'])) {
     </script>
 </body>
 </html>
-<?php } ?>

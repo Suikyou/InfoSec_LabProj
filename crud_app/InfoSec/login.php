@@ -20,26 +20,14 @@ include("CRUD/dbcon.php");
             $email = mysqli_real_escape_string($con, $_POST['email']);
             $password = mysqli_real_escape_string($con, $_POST['password']);
 
-            // Debugging: Display the email and password for verification
-            echo "Email: $email <br>";
-            echo "Password: $password <br>";
-
             // Fetch user from database based on email
             $result = mysqli_query($con, "SELECT * FROM users WHERE emailAdd='$email'") or die("Select Error: " . mysqli_error($con));
-
-            // Debugging: Display the SQL query for verification
-            $query = "SELECT * FROM users WHERE emailAdd='$email'";
-            echo "Query: $query <br>";
 
             if(mysqli_num_rows($result) == 1) {
                 $row = mysqli_fetch_assoc($result);
 
-                // Debugging: Display the hashed password from the database
-                $hashed_password_from_db = $row['password'];
-                echo "Hashed Password from DB: $hashed_password_from_db <br>";
-
                 // Verify password
-                if(password_verify($password, $hashed_password_from_db)) {
+                if(password_verify($password, $row['password'])) {
                     // Password is correct
                     $_SESSION['valid'] = $row['emailAdd'];
                     $_SESSION['firstName'] = $row['firstName'];
@@ -51,27 +39,19 @@ include("CRUD/dbcon.php");
                     exit(); // Stop execution
                 } else {
                     // Password is incorrect
-                    echo "<div class='message'>
-                            <p>Wrong Username or Password. Please try again!</p>
-                        </div> <br>";
-                    echo "<a href='login.php'><button class='btn'>Go Back</button></a>";
+                    echo "<script>alert('Wrong Username or Password. Please try again!');</script>";
                 }
             } else {
                 // User not found
-                echo "<div class='message'>
-                        <p>User not found. Please try again!</p>
-                    </div> <br>";
-                echo "<a href='login.php'><button class='btn'>Go Back</button></a>";
+                echo "<script>alert('User not found. Please try again!');</script>";
             }
-        } else {
-            echo "Submit not set.<br>";
         }
         ?>
         <header>Login</header>
         <form action="login.php" method="post">
             <div class="field input">
                 <label for="email">Email</label>
-                <input type="text" name="email" id="email" autocomplete="off" placeholder="Enter email here" required>
+                <input type="text" name="email" id="email" autocomplete="off" placeholder="Enter email here" required value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>">
             </div>
             <div class="field input">
                 <label for="password">Password</label>
