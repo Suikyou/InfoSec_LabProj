@@ -40,11 +40,12 @@ if (isset($_POST['update_task'])) {
 <form action="update_task.php?id_new=<?php echo $id; ?>" method="post" onsubmit="return confirm('Are you sure you want to update this task?')">
     <div class="form-group">
         <label for="title"> Title </label>
-        <input type="text" name="title" class="form-control" value="<?php echo $row['title'] ?>">
+        <input type="text" name="title" class="form-control" value="<?php echo $row['title'] ?>" required>
     </div>
     <div class="form-group">
         <label for="due_date"> Due Date </label>
-        <input type="datetime-local" name="due_date" class="form-control" value="<?php echo $row['due_date'] ?>">
+        <input type="datetime-local" name="due_date" class="form-control" value="<?php echo date('Y-m-d\TH:i', strtotime($row['due_date'])); ?>" required>
+        <small id="dateWarning" class="text-danger" style="display: none;">Please select a future date and time.</small>
     </div>
     <div class="form-group">
         <label for="notes"> Notes </label>
@@ -52,5 +53,27 @@ if (isset($_POST['update_task'])) {
     </div>
     <input type="submit" class="btn btn-success" name="update_task" value="Update">
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var dueDateInput = document.getElementsByName('due_date')[0];
+        dueDateInput.addEventListener('input', function() {
+            validateDate(this);
+        });
+
+        function validateDate(input) {
+            var selectedDate = new Date(input.value);
+            var currentDate = new Date();
+
+            if (selectedDate <= currentDate) {
+                document.getElementById('dateWarning').style.display = 'block';
+                input.setCustomValidity('Cannot select a date and time that is past now.');
+            } else {
+                document.getElementById('dateWarning').style.display = 'none';
+                input.setCustomValidity('');
+            }
+        }
+    });
+</script>
 
 <?php include('footer.php'); ?>

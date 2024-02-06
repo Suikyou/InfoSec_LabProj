@@ -22,7 +22,7 @@ if (isset($_POST['add_task'])) {
             if (!$result) {
                 die("Error: " . mysqli_error($connection));
             } else {
-                header('location:index.php?insert_msg=Your data has been added');
+                header('location:index.php?');
             }
         } else {
             die("Error: 'id' key is not set in the session.");

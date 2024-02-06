@@ -1,17 +1,22 @@
 <?php
+// Include database connection file
 include('dbcon.php');
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+// Check if the taskId is set in the POST request
+if(isset($_POST['taskId'])) {
+    $taskId = $_POST['taskId'];
 
-    $query = "DELETE FROM tasks WHERE id = $id";
+    // Delete the task from the tasks table
+    $delete_query = "DELETE FROM tasks WHERE id = '$taskId'";
+    $delete_result = mysqli_query($connection, $delete_query);
 
-    $result = mysqli_query($connection, $query);
-
-    if (!$result) {
-        die("Query Failed: " . mysqli_error($connection));
-    } else {
-        header('location:index.php?delete_msg=Deleted Successfully');
+    if (!$delete_result) {
+        // If deletion fails, return an error message
+        echo "Error deleting task";
     }
+
+} else {
+    // If taskId is not provided, return an error message
+    echo "Task ID not provided";
 }
 ?>
