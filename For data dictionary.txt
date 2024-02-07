@@ -1,0 +1,17 @@
+For data dictionary
+
+users_tbl
+-users_id int primary key
+-users_firstName varchar 40
+-users_lastName varchar 40
+-users_emailAdd varchar 20
+-users_password varchar 60
+
+tasks_tbl
+-tasks_id int primary key
+-tasks_fk_user_id int foreign key (connected to users_id)
+-tasks_title varchar 30
+-tasks_notes varchar 50-100
+-tasks_due_date datetime
+
+archived_tasks
