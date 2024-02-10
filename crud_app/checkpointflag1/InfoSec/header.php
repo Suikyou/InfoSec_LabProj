@@ -121,8 +121,6 @@ nav a:hover:after {
             <li><a> </a></li>
             <li><a href="index.php">Dashboard</a></li>
             <li><a href="archived_tasks.php">Archives</a></li>
-            <li><a href="private_password_form.php">Private</a></li>
-            <li><a href="logs_page.php">Logs</a></li>
             <li><a href="logout.php">Log Out</a></li>
         </ul>
     </nav>

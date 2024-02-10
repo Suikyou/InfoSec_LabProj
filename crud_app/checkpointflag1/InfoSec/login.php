@@ -2,7 +2,6 @@
 session_start();
 include("CRUD/dbcon.php");
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -117,7 +116,7 @@ include("CRUD/dbcon.php");
                     $_SESSION['valid'] = $row['user_eadd'];
                     $_SESSION['firstName'] = $row['user_fname'];
                     $_SESSION['lastName'] = $row['user_lname'];
-                    $_SESSION['id'] = $row['user_id_pk']; // Set user ID in session
+                    $_SESSION['id'] = $row['user_id_pk'];
 
                     // Redirect to tasks page
                     echo "<script>alert('Account logged in! Redirecting to the tasks page.'); window.location='CRUD/index.php';</script>";
