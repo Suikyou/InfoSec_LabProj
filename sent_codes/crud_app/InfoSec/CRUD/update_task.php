@@ -40,8 +40,8 @@ if (isset($_POST['update_task'])) {
         die("Query failed: " . mysqli_error($connection));
     } else {
         // Log the update operation
-        $log_action = 'update';
-        $item_type = 'task';
+        $log_action = 'User updated a';
+        $item_type = 'Task';
         $update_log_query = "INSERT INTO user_logs (user_id, action, item_id, item_type) VALUES (?, ?, ?, ?)";
         $stmt_log = $connection->prepare($update_log_query);
         $stmt_log->bind_param("isss", $_SESSION['id'], $log_action, $idnew, $item_type);

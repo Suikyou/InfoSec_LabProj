@@ -19,8 +19,8 @@ if(isset($_POST['task_id']) && !empty($_POST['task_id'])) {
     // Execute the query
     if(mysqli_query($connection, $query)) {
         // Log the deletion operation
-        $log_action = 'delete';
-        $item_type = 'archived_task';
+        $log_action = 'User deleted an';
+        $item_type = 'Archived Task';
         $insert_log_query = "INSERT INTO user_logs (user_id, action, item_id, item_type) VALUES (?, ?, ?, ?)";
         $stmt_log = $connection->prepare($insert_log_query);
         $stmt_log->bind_param("isss", $_SESSION['id'], $log_action, $task_id, $item_type);

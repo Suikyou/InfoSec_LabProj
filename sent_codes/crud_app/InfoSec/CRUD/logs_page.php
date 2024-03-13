@@ -18,10 +18,9 @@ if(!isset($_SESSION['valid'])){
     <table class="table table-hover table-bordered table-striped">
         <thead>
             <tr>
-                <th>Action</th>
-                <th>Item ID</th>
-                <th>Item Type</th>
-                <th>Timestamp</th>
+                <th class="col-2">Action</th>
+                <th class="col-3">Item Type</th>
+                <th class="col" style="text-align: center;">Timestamp</th>
             </tr>
         </thead>
         <tbody>
@@ -38,9 +37,8 @@ if(!isset($_SESSION['valid'])){
                     ?>
                     <tr>
                         <td><?php echo $row['action']; ?></td>
-                        <td><?php echo $row['item_id']; ?></td>
                         <td><?php echo $row['item_type']; ?></td>
-                        <td><?php echo $row['timestamp']; ?></td>
+                        <td class="text-center"><?php echo $row['timestamp']; ?></td>
                     </tr>
                     <?php
                 }

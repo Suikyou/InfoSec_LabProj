@@ -38,8 +38,8 @@ if(isset($_POST['taskId'])) {
     }
 
     // Log the archive action
-    $log_action = 'archive';
-    $item_type = 'task';
+    $log_action = 'User archived a';
+    $item_type = 'Task';
     $insert_log_query = "INSERT INTO user_logs (user_id, action, item_id, item_type) VALUES (?, ?, ?, ?)";
     $stmt_log = $connection->prepare($insert_log_query);
     $stmt_log->bind_param("isss", $_SESSION['id'], $log_action, $taskId, $item_type);
