@@ -1,3 +1,0 @@
-renamed all variables according to the database (specific)
-better ui design 
-
