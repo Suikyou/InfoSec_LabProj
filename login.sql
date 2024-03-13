@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 13, 2024 at 03:03 AM
+-- Generation Time: Mar 13, 2024 at 03:32 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -83,7 +83,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id_pk`, `user_fname`, `user_lname`, `user_eadd`, `user_pw`, `security_question`, `security_answer`) VALUES
-(13, 'q', 'q', 'q@gmail.com', '$2y$10$XnRRwiAXfeXuaXyQFZglI.gLklSRj3veoJLQ6EIfoVTHzPYjLOSva', 'What is the name of the company you had your first job at?', 'Str company');
+(13, 'q', 'q', 'q@gmail.com', '$2y$10$k3elclN2aBtOos8abetXHersy1M6FsPFfXunJe5deXarW8f0An50a', 'What is the name of the company you had your first job at?', 'Str company');
 
 -- --------------------------------------------------------
 
@@ -99,6 +99,16 @@ CREATE TABLE `user_logs` (
   `item_type` varchar(50) DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_logs`
+--
+
+INSERT INTO `user_logs` (`log_id`, `user_id`, `action`, `item_id`, `item_type`, `timestamp`) VALUES
+(97, 13, 'User created a', 69, 'Task', '2024-03-13 02:14:59'),
+(98, 13, 'User updated a', 69, 'Task', '2024-03-13 02:15:02'),
+(99, 13, 'User archived a', 69, 'Task', '2024-03-13 02:15:03'),
+(100, 13, 'User deleted an', 69, 'Archived Task', '2024-03-13 02:15:06');
 
 --
 -- Indexes for dumped tables
@@ -144,7 +154,7 @@ ALTER TABLE `user_logs`
 -- AUTO_INCREMENT for table `archived_tasks`
 --
 ALTER TABLE `archived_tasks`
-  MODIFY `archived_tasks_id_pk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `archived_tasks_id_pk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `private_tasks`
@@ -156,7 +166,7 @@ ALTER TABLE `private_tasks`
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `tasks_id_pk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `tasks_id_pk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -168,7 +178,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_logs`
 --
 ALTER TABLE `user_logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- Constraints for dumped tables
